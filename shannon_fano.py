@@ -5,7 +5,7 @@ def to_char_dict(sentence: str) -> dict[str, float]:
     n: int = len(sentence)
     per: float = 1 / n
     char_dict: dict[str, float] = {}
-    for char in sentence:
+    for char in sentence.lower():
         if char in char_dict.keys():
             char_dict[char] += per
         else:
@@ -74,6 +74,20 @@ class ShannonFano:
 
     def encode(self, sentence: str) -> str:
         code: str = ""
-        for char in sentence:
+        for char in sentence.lower():
             code += self.encode_dict[char]
         return code
+
+    def decode(self, code: str) -> str:
+        sentence: str = ""
+        pos = self.root
+        for char in code:
+            if char == "0":
+                pos = pos.left
+            else:  # I am not adding any try-catch functionalities. I will just hope it works.
+                pos = pos.right
+            # if we end on a leaf node, we add its key to the sentence and reset pos.
+            if pos.leaf:
+                sentence += pos.key
+                pos = self.root
+        return sentence
