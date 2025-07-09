@@ -71,3 +71,9 @@ class ShannonFano:
                 temp_dict[temp.left] = temp_dict[temp] + "0"
                 temp_dict[temp.right] = temp_dict[temp] + "1"
             temp_dict.pop(temp)
+
+    def encode(self, sentence: str) -> str:
+        code: str = ""
+        for char in sentence:
+            code += self.encode_dict[char]
+        return code
