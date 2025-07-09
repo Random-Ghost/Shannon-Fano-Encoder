@@ -55,14 +55,19 @@ class ShannonFano:
 
         n: int = len(node_list)
         self.root = create_tree(node_list, 0, n - 1)  # we have now created the tree structure.
-        self.bin()
+        self.bin()  # we now have the code dictionary
 
-    def bin(self):
+    def bin(self) -> None:
         # we will use a BFS algorithm to find the code values of the characters.
         # 0 for left nodes and 1 for right nodes.
         temp_dict: dict[Node, str] = {self.root.left: "0", self.root.right: "1"}
         while len(temp_dict) >= 1:
             temp = next(iter(temp_dict))  # this gives us the first index on the dictionary
+            # we should also note that temp is a Node object.
             # if it is a leaf node, we add it to encode_dict and remove it from temp_dict
+            if temp.leaf:
+                self.encode_dict[temp.key] = temp_dict[temp]
+            else:
+                temp_dict[temp.left] = temp_dict[temp] + "0"
+                temp_dict[temp.right] = temp_dict[temp] + "1"
             temp_dict.pop(temp)
-            print(temp_dict)
